@@ -19,6 +19,12 @@ const (
 
 var Db *sql.DB
 
+var id string
+var name string
+var email string
+var balance float64
+var price float64
+
 func init() {
 	psqlconn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", host, port, user, password, dbname)
 	var err error
@@ -65,10 +71,6 @@ func GetProducts(sort bool) []module.Product {
 	defer rows.Close()
 	products := make([]module.Product, 0, 100)
 	for rows.Next() {
-		var name string
-		var price float64
-		var id string
-
 		err = rows.Scan(&id, &name, &price)
 		cnt, avg := AvgProductRate(id)
 		CheckError(err)
@@ -84,10 +86,6 @@ func GetProduct(id string) module.Product {
 	var product module.Product
 	defer rows.Close()
 	for rows.Next() {
-
-		var name string
-		var price float64
-		var id string
 		err = rows.Scan(&id, &name, &price)
 		CheckError(err)
 		cnt, avg := AvgProductRate(id)
@@ -102,7 +100,6 @@ func GetOrders(id string) []module.Order {
 	defer rows.Close()
 	orders := make([]module.Order, 0, 100)
 	for rows.Next() {
-		var id string
 		var user_rate int
 		var order_id string
 		err = rows.Scan(&order_id, &id, &user_rate)
@@ -125,10 +122,6 @@ func GetProductsByName(name string) []module.Product {
 	defer rows.Close()
 	products := make([]module.Product, 0, 100)
 	for rows.Next() {
-		var name string
-		var price float64
-
-		var id string
 		err = rows.Scan(&id, &name, &price)
 		CheckError(err)
 		cnt, avg := AvgProductRate(id)
@@ -145,10 +138,6 @@ func GetUser(email string, pass int) (bool, module.User) {
 
 	defer rows.Close()
 	for rows.Next() {
-		var id string
-		var name string
-		var email string
-		var balance float64
 		err = rows.Scan(&id, &name, &email, &balance)
 		CheckError(err)
 		return true, module.User{id, name, email, balance}
