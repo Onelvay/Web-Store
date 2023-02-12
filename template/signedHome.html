@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Store</title>
+    <link  rel="stylesheet" href="home.css"/>
+</head>
+<body>
+    <div>
+        
+        <div class="login-block">
+            {{if .User.Name}}
+            <div>
+                {{.User.Name}}
+            </div>
+            <div>
+                {{.User.Balance}}
+            </div>
+            {{else}}
+            
+            <div class="login-block">
+                <div>
+                    <a href="/home/authorization">Регистрация</a>
+                </div>
+                <div>
+                    <a href="/home/signin">Войти</a>
+                </div>
+            </div>
+        
+            {{end}}
+            <form action="/search">
+                <input type="search" name="search">
+                <button type="submit">Поиск</button>
+            </form>
+
+            
+        </div>
+        <form action="/sort">
+            {{if .Sort}}
+            <input type="submit" value="Отсортировать в обратном порядке" name="sorted">
+            {{else}}
+            <input type="submit" value="Отсортировать по цене" name="sorted">
+            {{end}}
+        </form>
+
+        <div class="cards">
+        {{range .Products}}
+        <div class="card">
+            <div>
+                Товар :  {{.Name}}
+            </div>
+            <div>
+                <form action="/purchase"  >
+                    Цена : {{.Price}}
+                    <br>
+                    <input value={{.Id}} name="id" style="border:none; width: 0px;">
+                    <input type="submit" value="Купить">
+                </form>
+            </div>
+        </div>
+        {{end}}
+        </div>
+    </div>
+
+</body>
+</html>
+

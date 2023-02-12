@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Pokypka</title>
+</head>
+<body>
+    
+    <div>Результаты по запросу : {{.Search}}</div>
+    {{if .Products}}
+    {{range .Products}}
+    <div>Название товара {{.Name}}</div>
+    <div>Стоимость товара {{.Price}}</div>
+
+    <form action="/purchase" >
+        <input value={{.Id}} name="id" style="border:none; width: 0px;">
+        <button>Купить</button>
+    </form>
+    {{end}}
+
+    {{else}}
+    <div>Ничего не найдено</div>
+    {{end}}
+    <form action="/home" >
+        <button>Вернуться</button>
+    </form>
+   
+</body>
+</html>

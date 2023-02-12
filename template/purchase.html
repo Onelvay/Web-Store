@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Purchase</title>
+</head>
+<body>
+    <div>Ваш Баланс {{.User.Balance}}</div>
+    <div>Стоимость товара {{.Products.Price}}</div>
+    <form action="/buying" >
+        <button>Купить</button>
+    </form>
+    <form action="/home" >
+        <button>Вернуться</button>
+    </form>
+</body>
+</html>
