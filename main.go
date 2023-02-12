@@ -5,6 +5,8 @@ import (
 	"net/http"
 	"text/template"
 
+	"strconv"
+
 	db "github.com/Onelvay/Web-Store/database"
 	module "github.com/Onelvay/Web-Store/module"
 	uuid "github.com/google/uuid"
@@ -139,7 +141,31 @@ func Search(writer http.ResponseWriter, request *http.Request) {
 	err = html.Execute(writer, data)
 	check(err)
 }
+func userOrders(writer http.ResponseWriter, request *http.Request) {
+	html, err := template.ParseFiles("template/userOrders.html")
+	check(err)
+	products := db.GetOrders(Account.Id)
+	var data = struct {
+		Products []module.Order
+	}{
+		Products: products,
+	}
+	err = html.Execute(writer, data)
+	check(err)
+}
+
+func RateOrder(writer http.ResponseWriter, request *http.Request) {
+	rate := request.FormValue("quantity")
+	id := request.FormValue("id")
+	i, err := strconv.Atoi(rate)
+	check(err)
+	db.SetRate(id, i)
+	http.Redirect(writer, request, "/home", http.StatusFound)
+
+}
+
 func main() {
+	http.HandleFunc("/home/user/products", userOrders)
 	http.HandleFunc("/home/authorization/create", createAccount)
 	http.HandleFunc("/home", homePage)
 	http.HandleFunc("/home/signin/create", signIn)
@@ -150,6 +176,7 @@ func main() {
 	http.HandleFunc("/buying", Purchase)
 	http.HandleFunc("/sort", SortPrice)
 	http.HandleFunc("/search", Search)
+	http.HandleFunc("/rate", RateOrder)
 	err := http.ListenAndServe("localhost:8080", nil)
 	log.Fatal(err)
 }

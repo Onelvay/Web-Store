@@ -15,6 +15,12 @@
             <div>
                 {{.User.Balance}}
             </div>
+
+            <form action="/home/user/products">
+                <button type="submit" >Ваши товары
+                </button >
+            </form>
+
             {{else}}
             
             <div class="login-block">
@@ -55,6 +61,16 @@
                     <input value={{.Id}} name="id" style="border:none; width: 0px;">
                     <input type="submit" value="Купить">
                 </form>
+            </div>
+            
+            <div>
+                {{if eq .Rating -1.0}}
+                    Рейтинг :0 
+                    Количество заказов: {{.OrderCnt}}
+                {{else}}
+                    Рейтинг : {{.Rating}}
+                    Количество заказов: {{.OrderCnt}}
+                {{end}}
             </div>
         </div>
         {{end}}
